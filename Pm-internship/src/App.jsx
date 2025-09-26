@@ -1,120 +1,65 @@
 import React, { useState } from 'react';
-import { MapPin, BookOpen, Briefcase, Star, ArrowRight, User, GraduationCap, Target, Home, ChevronLeft } from 'lucide-react';
+import { MapPin, BookOpen, Briefcase, Star, ArrowRight, User, GraduationCap, Target, ChevronLeft } from 'lucide-react';
 import './index.css'
 import Navbar from "./Navbar";
 import Login from "./Login"; 
-const mockInternships = [
-  {
-    id: 1,
-    title: "Digital Marketing Assistant",
-    organization: "Ministry of MSME",
-    sector: "Marketing",
-    location: "Delhi",
-    duration: "6 months",
-    stipend: "₹15,000/month",
-    skills: ["social media", "content creation", "digital marketing"],
-    education: ["12th", "graduation", "diploma"],
-    description: "Support digital marketing campaigns for MSME initiatives",
-    matchScore: 0
-  },
-  {
-    id: 2,
-    title: "Data Entry Operator",
-    organization: "Department of Agriculture",
-    sector: "Technology",
-    location: "Mumbai",
-    duration: "4 months",
-    stipend: "₹12,000/month",
-    skills: ["computer skills", "data entry", "ms office"],
-    education: ["12th", "graduation"],
-    description: "Maintain agricultural databases and records",
-    matchScore: 0
-  },
-  {
-    id: 3,
-    title: "Community Health Worker",
-    organization: "Ministry of Health",
-    sector: "Healthcare",
-    location: "Bangalore",
-    duration: "8 months",
-    stipend: "₹18,000/month",
-    skills: ["communication", "healthcare", "community outreach"],
-    education: ["12th", "graduation", "nursing"],
-    description: "Support community health programs in rural areas",
-    matchScore: 0
-  },
-  {
-    id: 4,
-    title: "Financial Literacy Trainer",
-    organization: "Department of Financial Services",
-    sector: "Finance",
-    location: "Chennai",
-    duration: "6 months",
-    stipend: "₹16,000/month",
-    skills: ["teaching", "communication", "basic finance"],
-    education: ["graduation", "commerce", "mba"],
-    description: "Conduct financial literacy programs in rural areas",
-    matchScore: 0
-  },
-  {
-    id: 5,
-    title: "Agricultural Extension Worker",
-    organization: "Ministry of Agriculture",
-    sector: "Agriculture",
-    location: "Pune",
-    duration: "10 months",
-    stipend: "₹14,000/month",
-    skills: ["agriculture", "farming techniques", "communication"],
-    education: ["12th", "agriculture", "diploma"],
-    description: "Help farmers adopt modern agricultural practices",
-    matchScore: 0
-  },
-  {
-    id: 6,
-    title: "Content Creator",
-    organization: "Ministry of Information & Broadcasting",
-    sector: "Media",
-    location: "Kolkata",
-    duration: "5 months",
-    stipend: "₹13,000/month",
-    skills: ["writing", "content creation", "social media"],
-    education: ["graduation", "journalism", "mass communication"],
-    description: "Create content for government communication campaigns",
-    matchScore: 0
-  },
-  {
-    id: 7,
-    title: "IT Support Assistant",
-    organization: "Ministry of Electronics & IT",
-    sector: "Technology",
-    location: "Hyderabad",
-    duration: "6 months",
-    stipend: "₹17,000/month",
-    skills: ["computer skills", "troubleshooting", "technical support"],
-    education: ["12th", "graduation", "iti", "diploma"],
-    description: "Provide technical support for government digital initiatives",
-    matchScore: 0
-  },
-  {
-    id: 8,
-    title: "Rural Development Coordinator",
-    organization: "Ministry of Rural Development",
-    sector: "Social Work",
-    location: "Jaipur",
-    duration: "12 months",
-    stipend: "₹20,000/month",
-    skills: ["project management", "community work", "communication"],
-    education: ["graduation", "social work", "rural studies"],
-    description: "Coordinate rural development projects and community programs",
-    matchScore: 0
-  }
+import axios from 'axios';
+
+const educationOptions = [
+  { value: '10th', label: '10th Pass', icon: '📚' },
+  { value: '12th', label: '12th Pass', icon: '🎓' },
+  { value: 'diploma', label: 'Diploma', icon: '📜' },
+  { value: 'graduation', label: 'Graduate', icon: '🎓' },
+  { value: 'postgraduation', label: 'Post Graduate', icon: '👨‍🎓' },
+  { value: 'iti', label: 'ITI', icon: '🔧' }
+];
+
+const skillOptions = [
+  { value: 'computer skills', label: 'Computer Skills', icon: '💻' },
+  { value: 'communication', label: 'Communication', icon: '💬' },
+  { value: 'teaching', label: 'Teaching', icon: '👨‍🏫' },
+  { value: 'data entry', label: 'Data Entry', icon: '⌨️' },
+  { value: 'social media', label: 'Social Media', icon: '📱' },
+  { value: 'agriculture', label: 'Agriculture', icon: '🌾' },
+  { value: 'healthcare', label: 'Healthcare', icon: '🏥' },
+  { value: 'writing', label: 'Writing', icon: '✏️' },
+  { value: 'project management', label: 'Project Management', icon: '📊' },
+  { value: 'technical support', label: 'Technical Support', icon: '🔧' }
+];
+
+const interestOptions = [
+  { value: 'technology', label: 'Technology', icon: '💻' },
+  { value: 'healthcare', label: 'Healthcare', icon: '🏥' },
+  { value: 'education', label: 'Education', icon: '📚' },
+  { value: 'agriculture', label: 'Agriculture', icon: '🌾' },
+  { value: 'finance', label: 'Finance', icon: '💰' },
+  { value: 'marketing', label: 'Marketing', icon: '📈' },
+  { value: 'social work', label: 'Social Work', icon: '🤝' },
+  { value: 'media', label: 'Media', icon: '📺' }
+];
+
+const locationOptions = [
+  { value: 'delhi', label: 'Delhi', icon: '🏛️' },
+  { value: 'mumbai', label: 'Mumbai', icon: '🌆' },
+  { value: 'bangalore', label: 'Bangalore', icon: '🏢' },
+  { value: 'chennai', label: 'Chennai', icon: '🏖️' },
+  { value: 'kolkata', label: 'Kolkata', icon: '🌉' },
+  { value: 'hyderabad', label: 'Hyderabad', icon: '💎' },
+  { value: 'pune', label: 'Pune', icon: '🎓' },
+  { value: 'jaipur', label: 'Jaipur', icon: '🏰' },
+  { value: 'anywhere', label: 'Anywhere in India', icon: '🇮🇳' }
+];
+
+const experienceOptions = [
+  { value: 'fresher', label: 'No Experience (Fresher)', icon: '🌱' },
+  { value: 'some', label: 'Some Experience', icon: '📈' },
+  { value: 'experienced', label: 'Experienced', icon: '⭐' }
 ];
 
 function App() {
   const [currentStep, setCurrentStep] = useState(0);
-   const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-
   const [profile, setProfile] = useState({
     education: '',
     skills: [],
@@ -122,112 +67,29 @@ function App() {
     location: '',
     experience: ''
   });
-  const handleLogin = (email) => {
-    setUserEmail(email);
-    setLoggedIn(true);  // now show internship app
-  };
   const [recommendations, setRecommendations] = useState([]);
   const [showRecommendations, setShowRecommendations] = useState(false);
 
-  const educationOptions = [
-    { value: '10th', label: '10th Pass', icon: '📚' },
-    { value: '12th', label: '12th Pass', icon: '🎓' },
-    { value: 'diploma', label: 'Diploma', icon: '📜' },
-    { value: 'graduation', label: 'Graduate', icon: '🎓' },
-    { value: 'postgraduation', label: 'Post Graduate', icon: '👨‍🎓' },
-    { value: 'iti', label: 'ITI', icon: '🔧' }
-  ];
-
-  const skillOptions = [
-    { value: 'computer skills', label: 'Computer Skills', icon: '💻' },
-    { value: 'communication', label: 'Communication', icon: '💬' },
-    { value: 'teaching', label: 'Teaching', icon: '👨‍🏫' },
-    { value: 'data entry', label: 'Data Entry', icon: '⌨️' },
-    { value: 'social media', label: 'Social Media', icon: '📱' },
-    { value: 'agriculture', label: 'Agriculture', icon: '🌾' },
-    { value: 'healthcare', label: 'Healthcare', icon: '🏥' },
-    { value: 'writing', label: 'Writing', icon: '✏️' },
-    { value: 'project management', label: 'Project Management', icon: '📊' },
-    { value: 'technical support', label: 'Technical Support', icon: '🔧' }
-  ];
-
-  const interestOptions = [
-    { value: 'technology', label: 'Technology', icon: '💻' },
-    { value: 'healthcare', label: 'Healthcare', icon: '🏥' },
-    { value: 'education', label: 'Education', icon: '📚' },
-    { value: 'agriculture', label: 'Agriculture', icon: '🌾' },
-    { value: 'finance', label: 'Finance', icon: '💰' },
-    { value: 'marketing', label: 'Marketing', icon: '📈' },
-    { value: 'social work', label: 'Social Work', icon: '🤝' },
-    { value: 'media', label: 'Media', icon: '📺' }
-  ];
-
-  const locationOptions = [
-    { value: 'delhi', label: 'Delhi', icon: '🏛️' },
-    { value: 'mumbai', label: 'Mumbai', icon: '🌆' },
-    { value: 'bangalore', label: 'Bangalore', icon: '🏢' },
-    { value: 'chennai', label: 'Chennai', icon: '🏖️' },
-    { value: 'kolkata', label: 'Kolkata', icon: '🌉' },
-    { value: 'hyderabad', label: 'Hyderabad', icon: '💎' },
-    { value: 'pune', label: 'Pune', icon: '🎓' },
-    { value: 'jaipur', label: 'Jaipur', icon: '🏰' },
-    { value: 'anywhere', label: 'Anywhere in India', icon: '🇮🇳' }
-  ];
-
-  const experienceOptions = [
-    { value: 'fresher', label: 'No Experience (Fresher)', icon: '🌱' },
-    { value: 'some', label: 'Some Experience', icon: '📈' },
-    { value: 'experienced', label: 'Experienced', icon: '⭐' }
-  ];
-
-  if (!loggedIn) {
-    return <Login onLogin={handleLogin} />;
-  }
-  const calculateMatchScore = (internship, candidateProfile) => {
-    let score = 0;
-    
-    // Education match (30%)
-    if (internship.education.includes(candidateProfile.education)) {
-      score += 30;
-    }
-    
-    // Skills match (40%)
-    const skillMatches = candidateProfile.skills.filter(skill => 
-      internship.skills.some(reqSkill => 
-        reqSkill.toLowerCase().includes(skill.toLowerCase()) || 
-        skill.toLowerCase().includes(reqSkill.toLowerCase())
-      )
-    );
-    score += (skillMatches.length / candidateProfile.skills.length) * 40;
-    
-    // Interest match (20%)
-    const sectorMatch = candidateProfile.interests.some(interest => 
-      internship.sector.toLowerCase().includes(interest.toLowerCase()) ||
-      internship.title.toLowerCase().includes(interest.toLowerCase())
-    );
-    if (sectorMatch) score += 20;
-    
-    // Location preference (10%)
-    if (candidateProfile.location === 'anywhere' || 
-        internship.location.toLowerCase().includes(candidateProfile.location.toLowerCase())) {
-      score += 10;
-    }
-    
-    return Math.min(score, 100);
+  const handleLogin = (email) => {
+    setUserEmail(email);
+    setLoggedIn(true);
   };
 
-  const generateRecommendations = () => {
-    const scoredInternships = mockInternships.map(internship => ({
-      ...internship,
-      matchScore: calculateMatchScore(internship, profile)
-    }));
-    
-    const topRecommendations = scoredInternships
-      .sort((a, b) => b.matchScore - a.matchScore)
-      .slice(0, 5);
-    
-    setRecommendations(topRecommendations);
-    setShowRecommendations(true);
+  const generateRecommendations = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/recommend', {
+        skills: profile.skills,
+        education: profile.education,
+        preferred_location: profile.location,
+        expected_stipend: 0 // or add stipend field if you collect it
+      });
+      setRecommendations(response.data);
+      setShowRecommendations(true);
+    } catch (error) {
+      alert('Failed to fetch recommendations');
+      setRecommendations([]);
+      setShowRecommendations(true);
+    }
   };
 
   const handleSkillToggle = (skill) => {
@@ -316,7 +178,6 @@ function App() {
             </div>
           </div>
         );
-
       case 1:
         return (
           <div className="space-y-8">
@@ -356,7 +217,6 @@ function App() {
             </div>
           </div>
         );
-
       case 2:
         return (
           <div className="space-y-8">
@@ -396,7 +256,6 @@ function App() {
             </div>
           </div>
         );
-
       case 3:
         return (
           <div className="space-y-8">
@@ -425,7 +284,6 @@ function App() {
             </div>
           </div>
         );
-
       case 4:
         return (
           <div className="space-y-8">
@@ -454,7 +312,6 @@ function App() {
             </div>
           </div>
         );
-
       default:
         return null;
     }
@@ -470,6 +327,10 @@ function App() {
       default: return false;
     }
   };
+
+  if (!loggedIn) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   if (showRecommendations) {
     return (
@@ -499,18 +360,20 @@ function App() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-              {recommendations.map((internship) => (
-                <div key={internship.id} className="bg-gradient-to-br from-white to-blue-50/50 rounded-2xl p-6 border border-blue-100/50 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden">
+              {recommendations.length === 0 && (
+                <div className="col-span-2 text-center text-gray-500 text-lg">
+                  No recommendations found for your profile.
+                </div>
+              )}
+              {recommendations.map((internship, idx) => (
+                <div key={idx} className="bg-gradient-to-br from-white to-blue-50/50 rounded-2xl p-6 border border-blue-100/50 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] relative overflow-hidden">
                   {/* Card decorative element */}
                   <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-10 translate-x-10"></div>
                   
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{internship.title}</h3>
-                      <p className="text-blue-600 font-semibold text-lg">{internship.organization}</p>
-                    </div>
-                    <div className="bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                      {internship.matchScore}% Match
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight">{internship['Title']}</h3>
+                      <p className="text-blue-600 font-semibold text-lg">{internship['Eligibility']}</p>
                     </div>
                   </div>
                   
@@ -519,30 +382,25 @@ function App() {
                       <div className="p-2 bg-orange-100 rounded-lg">
                         <MapPin className="h-4 w-4 text-orange-600" />
                       </div>
-                      <span className="font-medium">{internship.location}</span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-gray-700">
-                      <div className="p-2 bg-purple-100 rounded-lg">
-                        <Briefcase className="h-4 w-4 text-purple-600" />
-                      </div>
-                      <span className="font-medium">{internship.duration}</span>
+                      <span className="font-medium">{internship['Location (State)']}</span>
                     </div>
                     <div className="flex items-center space-x-3 text-green-700 font-semibold">
                       <div className="p-2 bg-green-100 rounded-lg">
                         <span className="text-green-600">💰</span>
                       </div>
-                      <span className="text-lg">{internship.stipend}</span>
+                      <span className="text-lg">{internship['Stipend (₹/Month)']}</span>
+                    </div>
+                    <div className="flex items-center space-x-3 text-gray-700">
+                      <div className="p-2 bg-purple-100 rounded-lg">
+                        <Briefcase className="h-4 w-4 text-purple-600" />
+                      </div>
+                      <span className="font-medium">Deadline: {internship['Application Deadline']}</span>
                     </div>
                   </div>
                   
-                  <p className="text-gray-700 mb-5 leading-relaxed">{internship.description}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {internship.skills.slice(0, 3).map((skill) => (
-                      <span key={skill} className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium border border-blue-200">
-                        {skill}
-                      </span>
-                    ))}
+                  <div className="mb-4">
+                    <span className="font-semibold text-gray-700">Skills Required: </span>
+                    <span className="text-gray-600">{internship['Skills Required']}</span>
                   </div>
                   
                   <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
