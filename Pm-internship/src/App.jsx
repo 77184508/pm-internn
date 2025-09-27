@@ -4,7 +4,7 @@ import './index.css'
 import Navbar from "./Navbar";
 import Login from "./Login"; 
 import axios from 'axios';
-
+import { useTranslation } from 'react-i18next';
 const educationOptions = [
   { value: '10th', label: '10th Pass', icon: '📚' },
   { value: '12th', label: '12th Pass', icon: '🎓' },
@@ -57,6 +57,8 @@ const experienceOptions = [
 ];
 
 function App() {
+  const { t, i18n } = useTranslation();
+  const changeLanguage = (lng) => i18n.changeLanguage(lng);
   const [currentStep, setCurrentStep] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
@@ -81,7 +83,7 @@ function App() {
         skills: profile.skills,
         education: profile.education,
         preferred_location: profile.location,
-        expected_stipend: 0 // or add stipend field if you collect it
+        expected_stipend: 0
       });
       setRecommendations(response.data);
       setShowRecommendations(true);
@@ -157,8 +159,8 @@ function App() {
               <div className="mx-auto w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-105 transition-transform duration-200">
                 <GraduationCap className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Education</h2>
-              <p className="text-gray-600 text-lg">What is your highest education level?</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('your_education')}</h2>
+              <p className="text-gray-600 text-lg">{t('highest_education')}</p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {educationOptions.map((option) => (
@@ -185,8 +187,8 @@ function App() {
               <div className="mx-auto w-20 h-20 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-105 transition-transform duration-200">
                 <Target className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Skills</h2>
-              <p className="text-gray-600 text-lg">Select all skills you have (choose multiple)</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('your_skills')}</h2>
+              <p className="text-gray-600 text-lg">{t('select_skills')}</p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {skillOptions.map((option) => (
@@ -212,7 +214,7 @@ function App() {
             <div className="text-center">
               <div className="inline-flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full font-medium">
                 <Star className="h-4 w-4" fill="currentColor" />
-                <span>Selected: {profile.skills.length} skills</span>
+                <span>{t('selected_skills', { count: profile.skills.length })}</span>
               </div>
             </div>
           </div>
@@ -224,8 +226,8 @@ function App() {
               <div className="mx-auto w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-105 transition-transform duration-200">
                 <Briefcase className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Interests</h2>
-              <p className="text-gray-600 text-lg">What sectors interest you most?</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('your_interests')}</h2>
+              <p className="text-gray-600 text-lg">{t('select_interests')}</p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {interestOptions.map((option) => (
@@ -251,7 +253,7 @@ function App() {
             <div className="text-center">
               <div className="inline-flex items-center space-x-2 bg-purple-100 text-purple-800 px-4 py-2 rounded-full font-medium">
                 <Briefcase className="h-4 w-4" />
-                <span>Selected: {profile.interests.length} interests</span>
+                <span>{t('selected_interests', { count: profile.interests.length })}</span>
               </div>
             </div>
           </div>
@@ -263,8 +265,8 @@ function App() {
               <div className="mx-auto w-20 h-20 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-105 transition-transform duration-200">
                 <MapPin className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Preferred Location</h2>
-              <p className="text-gray-600 text-lg">Where would you like to work?</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('preferred_location')}</h2>
+              <p className="text-gray-600 text-lg">{t('where_work')}</p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {locationOptions.map((option) => (
@@ -291,8 +293,8 @@ function App() {
               <div className="mx-auto w-20 h-20 bg-gradient-to-r from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-105 transition-transform duration-200">
                 <BookOpen className="h-10 w-10 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Experience</h2>
-              <p className="text-gray-600 text-lg">What is your work experience level?</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">{t('your_experience')}</h2>
+              <p className="text-gray-600 text-lg">{t('work_experience_level')}</p>
             </div>
             <div className="grid grid-cols-1 gap-4">
               {experienceOptions.map((option) => (
@@ -338,6 +340,19 @@ function App() {
         <div className="max-w-4xl mx-auto px-4">
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/20 p-8 mb-8 relative overflow-hidden">
             {/* Decorative elements */}
+            <div className="flex justify-end mb-4">
+              <button onClick={() => changeLanguage('en')} className="mr-2 px-3 py-1 rounded bg-blue-100 hover:bg-blue-200">{t('english')}</button>
+              <button onClick={() => changeLanguage('hi')} className="px-3 py-1 rounded bg-yellow-100 hover:bg-yellow-200">{t('hindi')}</button>
+            </div>
+            <div className="text-center mb-8 relative z-10">
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+                  <User className="h-8 w-8 text-white" />
+                </div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{t('your_recommendations')}</h1>
+              </div>
+              <p className="text-gray-600 text-lg font-medium">{t('top_internships')}</p>
+            </div>
             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-yellow-400/10 to-orange-400/10 rounded-full -translate-y-20 translate-x-20"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-green-400/10 to-blue-400/10 rounded-full translate-y-16 -translate-x-16"></div>
             
@@ -347,22 +362,14 @@ function App() {
                 className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl transition-all duration-200 font-medium"
               >
                 <ChevronLeft className="h-5 w-5" />
-                <span>Back to Form</span>
+                <span>{t('back_to_form')}</span>
               </button>
             </div>
             
-            <div className="text-center mb-10 relative z-10">
-              <div className="mx-auto w-24 h-24 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mb-6 shadow-xl transform hover:scale-105 transition-transform duration-200">
-                <Star className="h-12 w-12 text-white" fill="currentColor" />
-              </div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-3">Your Recommendations</h1>
-              <p className="text-gray-600 text-xl">Here are the top internships matched to your profile</p>
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
               {recommendations.length === 0 && (
                 <div className="col-span-2 text-center text-gray-500 text-lg">
-                  No recommendations found for your profile.
+                  {t('no_recommendations')}
                 </div>
               )}
               {recommendations.map((internship, idx) => (
@@ -394,17 +401,17 @@ function App() {
                       <div className="p-2 bg-purple-100 rounded-lg">
                         <Briefcase className="h-4 w-4 text-purple-600" />
                       </div>
-                      <span className="font-medium">Deadline: {internship['Application Deadline']}</span>
+                      <span className="font-medium">{t('deadline')}: {internship['Application Deadline']}</span>
                     </div>
                   </div>
                   
                   <div className="mb-4">
-                    <span className="font-semibold text-gray-700">Skills Required: </span>
+                    <span className="font-semibold text-gray-700">{t('skills_required')}: </span>
                     <span className="text-gray-600">{internship['Skills Required']}</span>
                   </div>
                   
                   <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
-                    <span className="text-lg">Apply Now</span>
+                    <span className="text-lg">{t('apply_now')}</span>
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
@@ -416,7 +423,7 @@ function App() {
                 onClick={resetForm}
                 className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 px-8 py-3 rounded-xl hover:from-gray-200 hover:to-gray-300 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:scale-105"
               >
-                Find More Recommendations
+                {t('find_more')}
               </button>
             </div>
           </div>
@@ -433,15 +440,21 @@ function App() {
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-16 translate-x-16"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-400/10 to-pink-400/10 rounded-full translate-y-12 -translate-x-12"></div>
           
+          {/* Language Switcher */}
+          <div className="flex justify-end mb-4">
+            <button onClick={() => changeLanguage('en')} className="mr-2 px-3 py-1 rounded bg-blue-100 hover:bg-blue-200">{t('english')}</button>
+            <button onClick={() => changeLanguage('hi')} className="px-3 py-1 rounded bg-yellow-100 hover:bg-yellow-200">{t('hindi')}</button>
+          </div>
+          
           {/* Header */}
           <div className="text-center mb-8 relative z-10">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <div className="p-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg">
                 <User className="h-8 w-8 text-white" />
               </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">PM Internship</h1>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{t('pm_internship')}</h1>
             </div>
-            <p className="text-gray-600 text-lg font-medium">Find the perfect internship for you in just a few steps</p>
+            <p className="text-gray-600 text-lg font-medium">{t('find_perfect')}</p>
           </div>
 
           {/* Progress Bar */}
@@ -464,7 +477,7 @@ function App() {
               }`}
             >
               <ChevronLeft className="h-4 w-4" />
-              <span>Previous</span>
+              <span>{t('previous')}</span>
             </button>
 
             <button
@@ -476,7 +489,7 @@ function App() {
                   : 'bg-gray-100 text-gray-400 cursor-not-allowed'
               }`}
             >
-              <span>{currentStep === 4 ? 'Get Recommendations' : 'Next'}</span>
+              <span>{currentStep === 4 ? t('get_recommendations') : t('next')}</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>

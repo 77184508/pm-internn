@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -19,11 +20,9 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            <a href="#home" className="hover:text-gray-200">Home</a>
-            <a href="#about" className="hover:text-gray-200">About</a>
-            <a href="#apply" className="hover:text-gray-200">Apply</a>
-            <a href="#recommendations" className="hover:text-gray-200">Recommendations</a>
-            <a href="#contact" className="hover:text-gray-200">Contact</a>
+            <Link to="/" className="hover:text-gray-200">Home</Link>
+            <Link to="/about" className="hover:text-gray-200">About</Link>
+            <Link to="/contact" className="hover:text-gray-200">Contact Us</Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -41,11 +40,9 @@ export default function Navbar() {
       {/* Mobile Menu Dropdown */}
       {open && (
         <div className="md:hidden bg-blue-500 px-4 py-3 space-y-2">
-          <a href="#home" className="block hover:text-gray-200">Home</a>
-          <a href="#about" className="block hover:text-gray-200">About</a>
-          <a href="#apply" className="block hover:text-gray-200">Apply</a>
-          <a href="#recommendations" className="block hover:text-gray-200">Recommendations</a>
-          <a href="#contact" className="block hover:text-gray-200">Contact</a>
+          <Link to="/" className="block hover:text-gray-200">Home</Link>
+          <Link to="/about" className="block hover:text-gray-200">About</Link>
+          <Link to="/contact" className="block hover:text-gray-200">Contact</Link>
         </div>
       )}
     </nav>
