@@ -1,21 +1,20 @@
-// Login.jsx
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-  
     if (!email.endsWith("@hbtu.ac.in")) {
       setError("Please use your college email ID.");
       return;
     }
 
-    
     if (password.trim() === "") {
       setError("Password cannot be empty.");
       return;
@@ -23,6 +22,7 @@ function Login({ onLogin }) {
 
     setError("");
     onLogin(email); 
+    navigate("/app"); // Navigate after successful login
   };
 
   return (

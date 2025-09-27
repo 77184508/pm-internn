@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import Login from "./Login"; 
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { useNavigate, Link, Route, Routes } from 'react-router-dom';
 const educationOptions = [
   { value: '10th', label: '10th Pass', icon: '📚' },
   { value: '12th', label: '12th Pass', icon: '🎓' },
@@ -57,11 +58,10 @@ const experienceOptions = [
 ];
 
 function App() {
+   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const changeLanguage = (lng) => i18n.changeLanguage(lng);
   const [currentStep, setCurrentStep] = useState(0);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
   const [profile, setProfile] = useState({
     education: '',
     skills: [],
@@ -72,10 +72,7 @@ function App() {
   const [recommendations, setRecommendations] = useState([]);
   const [showRecommendations, setShowRecommendations] = useState(false);
 
-  const handleLogin = (email) => {
-    setUserEmail(email);
-    setLoggedIn(true);
-  };
+ 
 
   const generateRecommendations = async () => {
     try {
@@ -329,11 +326,6 @@ function App() {
       default: return false;
     }
   };
-
-  if (!loggedIn) {
-    return <Login onLogin={handleLogin} />;
-  }
-
   if (showRecommendations) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 py-8">
@@ -410,10 +402,15 @@ function App() {
                     <span className="text-gray-600">{internship['Skills Required']}</span>
                   </div>
                   
-                  <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
-                    <span className="text-lg">{t('apply_now')}</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
+                 
+
+<button
+  onClick={() => navigate('/apply', { state: { profile } })}
+  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center justify-center space-x-2 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+>
+  <span className="text-lg">{t('apply_now')}</span>
+  <ArrowRight className="h-4 w-4" />
+</button>
                 </div>
               ))}
             </div>
